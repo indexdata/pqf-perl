@@ -1,4 +1,4 @@
-# $Id: 1.t,v 1.2 2004/12/17 15:29:33 mike Exp $
+# $Id: 1.t,v 1.3 2004/12/17 15:30:39 mike Exp $
 
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl 1.t'
@@ -9,11 +9,8 @@
 
 use strict;
 use warnings;
-use Test::More tests => 12;
+use Test::More tests => 11;
 BEGIN { use_ok('Net::Z3950::PQF') };
-
-my $parser = new Net::Z3950::PQF();
-ok(defined $parser, "created parser");
 
 my $term1 = new Net::Z3950::PQF::TermNode('unix');
 ok(defined $term1, "created simple term node");
@@ -66,9 +63,3 @@ and
 		attr: bib-1 5=1
 __EOT__
 ok($text eq $wanted, "rendered and node");
-
-
-#my $query = '@and @attr 1=1003 kernighan @attr 1=4 unix';
-#my $top = $parser->parse($query);
-#ok(defined $top, "parsed query");
-
