@@ -4,4 +4,6 @@ MANIFEST.SKIP
 Makefile.PL
 README
 lib/Net/Z3950/PQF.pm
-t/1.t
+lib/Net/Z3950/PQF/Node.pm
+t/1-node.t
+t/2-parser.t
