@@ -1,4 +1,4 @@
-# $Id: PQF.pm,v 1.4 2004/12/17 17:12:05 mike Exp $
+# $Id: PQF.pm,v 1.5 2004/12/20 09:22:12 mike Exp $
 
 package Net::Z3950::PQF;
 
@@ -8,7 +8,7 @@ use warnings;
 
 use Net::Z3950::PQF::Node;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 =head1 NAME
