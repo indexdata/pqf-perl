@@ -1,4 +1,9 @@
+$Id: Changes,v 1.2 2004/12/17 12:58:01 mike Exp $
+
 Revision history for Perl extension Net::Z3950::PQF.
+
+0.02  (IN PROGRESS)
+	- Add CVS Ids.
 
 0.01  Fri Dec 17 10:41:04 2004
 	- original version; created by h2xs 1.22 with options
