@@ -1,4 +1,4 @@
-# $Id: PQF.pm,v 1.2 2004/12/17 15:28:30 mike Exp $
+# $Id: PQF.pm,v 1.3 2004/12/17 16:58:09 mike Exp $
 
 package Net::Z3950::PQF;
 
@@ -59,6 +59,7 @@ sub new {
     my $class = shift();
 
     return bless {
+	text => undef,
 	errmsg => undef,
     }, $class;
 }
@@ -70,7 +71,7 @@ sub new {
  $node = $parser->parse($query);
  if (!defined $node)
      die "parse($query) failed: " . $parser->errmsg();
- } 
+ }
 
 Parses the PQF string provided as its argument.  If an error occurs,
 then an undefined value is returned, and the error message can be
@@ -90,10 +91,105 @@ second argument is absent, the default attribute set is BIB-1.
 
 sub parse {
     my $this = shift();
-    my($attrset) = @_;
+    my($text, $attrset) = @_;
     $attrset = "bib-1" if !defined $attrset;
 
-    die "parse($this) not yet implemented";
+    $this->{text} = $text;
+    return $this->_parse($attrset, {});
+}
+
+
+# PRIVATE to parse();
+#
+# Underlying parse function.  $attrset is the default attribute-set to
+# use for attributes that are not specified with an explicit set, and
+# $attrhash is hash of attributes (at most one per type per
+# attribute-set) to be applied to all nodes below this point.  The
+# keys of this hash are of the form "<attrset>:<type>" and the values
+# are the corresponding attribute values.
+#
+sub _parse {
+    my $this = shift();
+    my($attrset, $attrhash) = @_;
+
+    ###	This rather nasty hack for quoted terms doesn't recognised
+    #	backslash-quoted embedded double quotes.
+    $this->{text} =~ s/^\s+//;
+    if ($this->{text} =~ s/^"(.*?)"//) {
+	return $this->_term($1, $attrhash);
+    }
+
+    my $word = $this->_word();
+    if ($word eq '@attrset') {
+	$attrset = $this->_word();
+	return $this->_parse($attrset, $attrhash);
+
+    } elsif ($word eq '@attr') {
+	$word = $this->_word();
+	if ($word !~ /=/) {
+	    $attrset = $word;
+	    $word = $this->_word();
+	}
+	my($type, $val) = ($word =~ /(.*)=(.*)/);
+	my %h = %$attrhash;
+	$h{"$attrset:$type"} = $val;
+	return $this->_parse($attrset, \%h);
+
+    } elsif ($word eq '@and' || $word eq '@or' || $word eq '@not') {
+	my $sub1 = $this->_parse($attrset, $attrhash);
+	my $sub2 = $this->_parse($attrset, $attrhash);
+	if ($word eq '@and') {
+	    return new Net::Z3950::PQF::AndNode($sub1, $sub2);
+	} elsif ($word eq '@or') {
+	    return new Net::Z3950::PQF::OrNode($sub1, $sub2);
+	} elsif ($word eq '@not') {
+	    return new Net::Z3950::PQF::NotNode($sub1, $sub2);
+	} else {
+	    die "Houston, we have a problem";
+	}
+
+    } elsif ($word eq '@prox') {
+	return $this->_error("proximity not yet implemented");
+
+    }
+
+    # It must be a bareword
+    return $this->_term($word, $attrhash);
+}
+
+
+# PRIVATE to _parse();
+sub _word {
+    my $this = shift();
+
+    $this->{text} =~ s/^\s+//;
+    $this->{text} =~ s/^(\S+)//;
+    return $1;
+}
+
+
+# PRIVATE to _parse();
+sub _error {
+    my $this = shift();
+    my (@msg) = @_;
+
+    $this->{errmsg} = join(@msg);
+    return undef;
+}
+
+
+# PRIVATE to _parse();
+sub _term {
+    my $this = shift();
+    my($word, $attrhash) = @_;
+
+    my @attrs;
+    foreach my $key (sort keys %$attrhash) {
+	my($attrset, $type) = split /:/, $key;
+	push @attrs, [ $attrset, $type, $attrhash->{$key} ];
+    }
+
+    return new Net::Z3950::PQF::TermNode($word, @attrs);
 }
 
 
@@ -128,7 +224,7 @@ Mike Taylor, E<lt>mike@indexdata.comE<gt>
 Copyright 2004 by Index Data ApS.
 
 This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself. 
+it under the same terms as Perl itself.
 
 =cut
 
