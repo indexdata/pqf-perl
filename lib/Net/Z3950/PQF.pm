@@ -1,4 +1,4 @@
-# $Id: PQF.pm,v 1.1 2004/12/17 13:44:47 mike Exp $
+# $Id: PQF.pm,v 1.2 2004/12/17 15:28:30 mike Exp $
 
 package Net::Z3950::PQF;
 
@@ -6,7 +6,7 @@ use 5.006;
 use strict;
 use warnings;
 
-#use Net::Z3950::PQF::Node;
+use Net::Z3950::PQF::Node;
 
 our $VERSION = '0.02';
 
@@ -20,7 +20,7 @@ Net::Z3950::PQF - Perl extension for parsing PQF (Prefix Query Format)
  use Net::Z3950::PQF;
  $parser = new Net::Z3950::PQF();
  $node = $parser->parse('@and @attr 1=1003 kernighan @attr 1=4 unix');
- print $node->render();
+ print $node->render(0);
 
 =head1 DESCRIPTION
 
@@ -32,8 +32,10 @@ command-line client, C<yaz-client>.
 
 It is simple to use.  Create a parser object, then pass PQF strings
 into its C<parse()> method to yield parse-trees.  The trees are made
-up of nodes whose types are all of the form
-C<Net::Z3950::PQF::xxxNode>.  You may find it helpful to use
+up of nodes whose types are subclasses of
+C<Net::Z3950::PQF::Node>.
+and have names of the form
+C<Net::Z3950::PQF::somethingNode>.  You may find it helpful to use
 C<Data::Dumper> to visualise the structure of the returned
 parse-trees.
 
@@ -75,10 +77,21 @@ then an undefined value is returned, and the error message can be
 obtained by calling the C<errmsg()> method.  Otherwise, the top node
 of the parse tree is returned.
 
+ $node2 = $parser->parse($query, "zthes");
+ $node3 = $parser->parse($query, "1.2.840.10003.3.13");
+
+A second argument may be provided, after the query itself.  If it is
+provided, then it is taken to be either the name or the OID of a
+default attribute set, which attributes specified in the query belong
+to if no alternative attribute set is explicitly specified.  When this
+second argument is absent, the default attribute set is BIB-1.
+
 =cut
 
 sub parse {
     my $this = shift();
+    my($attrset) = @_;
+    $attrset = "bib-1" if !defined $attrset;
 
     die "parse($this) not yet implemented";
 }
@@ -118,3 +131,6 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
 
 =cut
+
+
+1;
