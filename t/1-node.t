@@ -1,11 +1,4 @@
-# $Id: 1-node.t,v 1.1 2004/12/17 15:31:16 mike Exp $
-
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl 1.t'
-
-#########################
-
-# change 'tests => 1' to 'tests => last_test_to_print';
+# $Id: 1-node.t,v 1.2 2004/12/17 15:32:20 mike Exp $
 
 use strict;
 use warnings;
