@@ -1,4 +1,4 @@
-$Id: Changes,v 1.6 2004/12/20 09:46:58 mike Exp $
+$Id: Changes,v 1.7 2004/12/22 17:55:24 mike Exp $
 
 Revision history for Perl extension Net::Z3950::PQF.
 
@@ -13,7 +13,7 @@ Revision history for Perl extension Net::Z3950::PQF.
 	- Test script "t/2-parser.t" now tests @set queries.
 
 0.02  Fri Dec 17 17:17:47 GMT 2004
-	- Add CVS Ids.
+	- Write the code!  First functional version.
 
 0.01  Fri Dec 17 10:41:04 2004
 	- original version; created by h2xs 1.22 with options
@@ -23,6 +23,7 @@ Revision history for Perl extension Net::Z3950::PQF.
 ### Still to do:
 	Correct handling of double-quoted terms, so that backslash can
 		protect embedded double quotes.
+	Handle multi-word terms enclosed in {curly brackets}
 	Support for creating and rendering ProxNode.
 	Support for parsing @prox.
 	Support for parsing @term.
