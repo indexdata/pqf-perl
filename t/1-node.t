@@ -1,8 +1,8 @@
-# $Id: 1-node.t,v 1.3 2004/12/20 09:23:58 mike Exp $
+# $Id: 1-node.t,v 1.4 2004/12/20 09:46:58 mike Exp $
 
 use strict;
 use warnings;
-use Test::More tests => 14;
+use Test::More tests => 17;
 BEGIN { use_ok('Net::Z3950::PQF') };
 
 my $term1 = new Net::Z3950::PQF::TermNode('unix');
@@ -18,6 +18,14 @@ ok(defined $term2, "created 'term' node with attrs");
 $text = $term2->render(0);
 ok($text eq "term: elements\n\tattr: bib-1 1=21\n\tattr: bib-1 2=3\n",
 	"rendered 'term' node with attrs");
+
+my $rset = new Net::Z3950::PQF::RsetNode('oldRsetName',
+					 [ "bib-1", 1, 1003 ]);
+ok(defined $rset, "created 'rset' node with attrs");
+ok($rset->isa("Net::Z3950::PQF::Node"), "'rset' is a node");
+$text = $rset->render(0);
+ok($text eq "rset: oldRsetName\n\tattr: bib-1 1=1003\n",
+	"rendered 'rset' node with attrs");
 
 my $or = new Net::Z3950::PQF::OrNode($term1, $term2);
 ok(defined $or, "created 'or' node");

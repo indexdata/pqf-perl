@@ -1,4 +1,4 @@
-# $Id: PQF.pm,v 1.5 2004/12/20 09:22:12 mike Exp $
+# $Id: PQF.pm,v 1.6 2004/12/20 09:46:58 mike Exp $
 
 package Net::Z3950::PQF;
 
@@ -119,7 +119,7 @@ sub _parse {
     #	backslash-quoted embedded double quotes.
     $this->{text} =~ s/^\s+//;
     if ($this->{text} =~ s/^"(.*?)"//) {
-	return $this->_term($1, $attrhash);
+	return $this->_leaf('term', $1, $attrhash);
     }
 
     my $word = $this->_word();
@@ -154,10 +154,13 @@ sub _parse {
     } elsif ($word eq '@prox') {
 	return $this->_error("proximity not yet implemented");
 
+    } elsif ($word eq '@set') {
+	$word = $this->_word();
+	return $this->_leaf('rset', $word, $attrhash);
     }
 
     # It must be a bareword
-    return $this->_term($word, $attrhash);
+    return $this->_leaf('term', $word, $attrhash);
 }
 
 
@@ -182,9 +185,9 @@ sub _error {
 
 
 # PRIVATE to _parse();
-sub _term {
+sub _leaf {
     my $this = shift();
-    my($word, $attrhash) = @_;
+    my($type, $word, $attrhash) = @_;
 
     my @attrs;
     foreach my $key (sort keys %$attrhash) {
@@ -192,7 +195,13 @@ sub _term {
 	push @attrs, [ $attrset, $type, $attrhash->{$key} ];
     }
 
-    return new Net::Z3950::PQF::TermNode($word, @attrs);
+    if ($type eq 'term') {
+	return new Net::Z3950::PQF::TermNode($word, @attrs);
+    } elsif ($type eq 'rset') {
+	return new Net::Z3950::PQF::RsetNode($word, @attrs);
+    } else {
+	die "_leaf() called with type='$type' (should be 'term' or 'rset')";
+    }
 }
 
 

@@ -1,12 +1,16 @@
-$Id: Changes,v 1.5 2004/12/20 09:23:44 mike Exp $
+$Id: Changes,v 1.6 2004/12/20 09:46:58 mike Exp $
 
 Revision history for Perl extension Net::Z3950::PQF.
 
 0.03  (IN PROGRESS)
 	- Net::Z3950::PQF::TermNode and Net::Z3950::PQF::BooleanNode
-	  are now subclasses or Net::Z3950::PQF::BooleanNode as
+	  are now subclasses of Net::Z3950::PQF::BooleanNode as
 	  documented.
 	- Test script "t/1-node.t" now tests subclassness.
+	- Support for Rset nodes.
+	- Test script "t/1-node.t" now tests Rset nodes.
+	- Support for parsing @set.
+	- Test script "t/2-parser.t" now tests @set queries.
 
 0.02  Fri Dec 17 17:17:47 GMT 2004
 	- Add CVS Ids.
@@ -21,6 +25,5 @@ Revision history for Perl extension Net::Z3950::PQF.
 		protect embedded double quotes.
 	Support for creating and rendering ProxNode.
 	Support for parsing @prox.
-	Support for parsing @set.
 	Support for parsing @term.
 
