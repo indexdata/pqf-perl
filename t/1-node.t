@@ -1,4 +1,4 @@
-# $Id: 1.t,v 1.3 2004/12/17 15:30:39 mike Exp $
+# $Id: 1-node.t,v 1.1 2004/12/17 15:31:16 mike Exp $
 
 # Before `make install' is performed this script should be runnable with
 # `make test'. After `make install' it should work as `perl 1.t'
