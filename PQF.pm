@@ -1,90 +1,118 @@
+# $Id: PQF.pm,v 1.2 2004/12/17 12:58:51 mike Exp $
+
 package Net::Z3950::PQF;
 
 use 5.006;
 use strict;
 use warnings;
 
-require Exporter;
-use AutoLoader qw(AUTOLOAD);
+#use Net::Z3950::PQF::Node;
 
-our @ISA = qw(Exporter);
+our $VERSION = '0.02';
 
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use Net::Z3950::PQF ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = qw(
-	
-);
-
-our $VERSION = '0.01';
-
-
-# Preloaded methods go here.
-
-# Autoload methods go after =cut, and are processed by the autosplit program.
-
-1;
-__END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-Net::Z3950::PQF - Perl extension for blah blah blah
+Net::Z3950::PQF - Perl extension for parsing PQF (Prefix Query Format)
 
 =head1 SYNOPSIS
 
-  use Net::Z3950::PQF;
-  blah blah blah
-
-=head1 ABSTRACT
-
-  This should be the abstract for Net::Z3950::PQF.
-  The abstract is used when making PPD (Perl Package Description) files.
-  If you don't want an ABSTRACT you should also edit Makefile.PL to
-  remove the ABSTRACT_FROM option.
+ use Net::Z3950::PQF;
+ $parser = new Net::Z3950::PQF();
+ $node = $parser->parse('@and @attr 1=1003 kernighan @attr 1=4 unix');
+ print $node->render();
 
 =head1 DESCRIPTION
 
-Stub documentation for Net::Z3950::PQF, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
+This library provides a parser for PQF (Prefix Query Format), an ugly
+but precise string format for expressing Z39.50 Type-1 queries.  This
+format is widely used behind the scenes of Z39.50 applications, and is
+also used extensively with test-harness programs such as the YAZ
+command-line client, C<yaz-client>.
 
-Blah blah blah.
+It is simple to use.  Create a parser object, then pass PQF strings
+into its C<parse()> method to yield parse-trees.  The trees are made
+up of nodes whose types are all of the form
+C<Net::Z3950::PQF::xxxNode>.  You may find it helpful to use
+C<Data::Dumper> to visualise the structure of the returned
+parse-trees.
 
-=head2 EXPORT
+What is a PQF parse-tree good for?  Not much.  You can render a
+human-readable version by invoking the top node's C<render()> method,
+which is probably useful only for debugging.  If you want to do
+anything useful, such as implementing an actual query server that
+understands PQF, you'll have to walk the tree.
 
-None by default.
+=head1 METHODS
 
+=head2 new()
+
+ $parser = new Net::Z3950::PQF();
+
+Creates a new parser object.
+
+=cut
+
+sub new {
+    my $class = shift();
+
+    return bless {
+	errmsg => undef,
+    }, $class;
+}
+
+
+=head2 parse()
+
+ $query = '@and @attr 1=1003 kernighan @attr 1=4 unix';
+ $node = $parser->parse($query);
+ if (!defined $node)
+     die "parse($query) failed: " . $parser->errmsg();
+ } 
+
+Parses the PQF string provided as its argument.  If an error occurs,
+then an undefined value is returned, and the error message can be
+obtained by calling the C<errmsg()> method.  Otherwise, the top node
+of the parse tree is returned.
+
+=cut
+
+sub parse {
+    my $this = shift();
+
+    die "parse($this) not yet implemented";
+}
+
+
+=head2 errmsg()
+
+ print $parser->errmsg();
+
+=cut
+
+sub errmsg {
+    my $this = shift();
+    return $this->{errmsg};
+}
 
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
+The definition of the Type-1 query in the Z39.50 standard, the
+relevant section of which is on-line at
+http://www.loc.gov/z3950/agency/markup/09.html#3.7
 
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+The documentation of Prefix Query Format in the YAZ Manual, the
+relevant section of which is on-line at
+http://indexdata.com/yaz/doc/tools.tkl#PQF
 
 =head1 AUTHOR
 
-Mike Taylor, E<lt>mike@localdomainE<gt>
+Mike Taylor, E<lt>mike@indexdata.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2004 by Mike Taylor
+Copyright 2004 by Index Data ApS.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
