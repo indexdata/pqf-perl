@@ -1,4 +1,4 @@
-# $Id: Node.pm,v 1.1 2004/12/17 15:29:00 mike Exp $
+# $Id: Node.pm,v 1.2 2004/12/20 09:23:11 mike Exp $
 
 package Net::Z3950::PQF::Node;
 
@@ -12,7 +12,7 @@ Net::Z3950::PQF::Node - Abstract class for nodes in a PQF parse tree
 
 =head1 SYNOPSIS
 
- $node = new Net::Z3950::PQF::Term('unix');
+ $node = new Net::Z3950::PQF::TermNode('unix');
  $node->isa("Net::Z3950::PQF::Node") or die "oops";
 
 =head1 DESCRIPTION
@@ -153,6 +153,7 @@ sub render {
 
 
 package Net::Z3950::PQF::TermNode;
+our @ISA = qw(Net::Z3950::PQF::Node);
 
 sub new {
     my $class = shift();
@@ -182,6 +183,7 @@ sub render {
 
 # PRIVATE class, used as base by AndNode, OrNode and NotNode
 package Net::Z3950::PQF::BooleanNode;
+our @ISA = qw(Net::Z3950::PQF::Node);
 
 sub new {
     my $class = shift();
@@ -208,24 +210,21 @@ sub render {
 
 
 package Net::Z3950::PQF::AndNode;
-use vars qw(@ISA);
-@ISA = qw(Net::Z3950::PQF::BooleanNode);
+our @ISA = qw(Net::Z3950::PQF::BooleanNode);
 
 sub _op { "and" }
 
 
 
 package Net::Z3950::PQF::OrNode;
-use vars qw(@ISA);
-@ISA = qw(Net::Z3950::PQF::BooleanNode);
+our @ISA = qw(Net::Z3950::PQF::BooleanNode);
 
 sub _op { "or" }
 
 
 
 package Net::Z3950::PQF::NotNode;
-use vars qw(@ISA);
-@ISA = qw(Net::Z3950::PQF::BooleanNode);
+our @ISA = qw(Net::Z3950::PQF::BooleanNode);
 
 sub _op { "not" }
 
