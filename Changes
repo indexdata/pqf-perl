@@ -1,16 +1,18 @@
-$Id: Changes,v 1.7 2004/12/22 17:55:24 mike Exp $
+$Id: Changes,v 1.8 2004/12/23 10:24:11 mike Exp $
 
 Revision history for Perl extension Net::Z3950::PQF.
 
 0.03  (IN PROGRESS)
 	- Net::Z3950::PQF::TermNode and Net::Z3950::PQF::BooleanNode
 	  are now subclasses of Net::Z3950::PQF::BooleanNode as
-	  documented.
-	- Test script "t/1-node.t" now tests subclassness.
-	- Support for Rset nodes.
-	- Test script "t/1-node.t" now tests Rset nodes.
-	- Support for parsing @set.
-	- Test script "t/2-parser.t" now tests @set queries.
+	  documented.  Test script "t/1-node.t" now tests subclass
+	  relationships.
+	- Support for Rset nodes.  Test script "t/1-node.t" now tests
+	  Rset nodes.
+	- Support for parsing @set.  Test script "t/2-parser.t" now
+	  tests @set queries.
+	- Handle multi-word terms enclosed in {curly brackets}.  Test
+	  script "t/2-parser.t" tests this.
 
 0.02  Fri Dec 17 17:17:47 GMT 2004
 	- Write the code!  First functional version.
@@ -21,10 +23,9 @@ Revision history for Perl extension Net::Z3950::PQF.
 
 
 ### Still to do:
-	Correct handling of double-quoted terms, so that backslash can
-		protect embedded double quotes.
-	Handle multi-word terms enclosed in {curly brackets}
-	Support for creating and rendering ProxNode.
-	Support for parsing @prox.
-	Support for parsing @term.
+	- Correct handling of double-quoted terms, so that backslash
+	  can protect embedded double quotes.
+	- Support for creating and rendering ProxNode.
+	- Support for parsing @prox.
+	- Support for parsing @term.
 

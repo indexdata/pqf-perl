@@ -1,4 +1,4 @@
-# $Id: 2-parser.t,v 1.3 2004/12/20 09:46:58 mike Exp $
+# $Id: 2-parser.t,v 1.4 2004/12/23 10:24:12 mike Exp $
 
 use strict;
 use warnings;
@@ -11,6 +11,8 @@ BEGIN {
 	      [ '"brian"',
 		"term: brian" ],
 	      [ '"brian kernighan"',
+		"term: brian kernighan" ],
+	      [ '{brian kernighan}',
 		"term: brian kernighan" ],
 	      [ '@attr 1=1003 brian',
 		"term: brian\n\tattr: bib-1 1=1003" ],

@@ -1,4 +1,4 @@
-# $Id: PQF.pm,v 1.6 2004/12/20 09:46:58 mike Exp $
+# $Id: PQF.pm,v 1.7 2004/12/23 10:24:12 mike Exp $
 
 package Net::Z3950::PQF;
 
@@ -115,10 +115,16 @@ sub _parse {
     my $this = shift();
     my($attrset, $attrhash) = @_;
 
+    $this->{text} =~ s/^\s+//;
+
     ###	This rather nasty hack for quoted terms doesn't recognised
     #	backslash-quoted embedded double quotes.
-    $this->{text} =~ s/^\s+//;
     if ($this->{text} =~ s/^"(.*?)"//) {
+	return $this->_leaf('term', $1, $attrhash);
+    }
+
+    # Also recognise multi-word terms enclosed in {curly braces}
+    if ($this->{text} =~ s/^{(.*?)}//) {
 	return $this->_leaf('term', $1, $attrhash);
     }
 
