@@ -1,4 +1,4 @@
-# $Id: PQF.pm,v 1.2 2004/12/17 12:58:51 mike Exp $
+# $Id: PQF.pm,v 1.1 2004/12/17 13:44:47 mike Exp $
 
 package Net::Z3950::PQF;
 

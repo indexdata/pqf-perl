@@ -1,7 +1,7 @@
 Changes
-Makefile.PL
 MANIFEST
 MANIFEST.SKIP
-PQF.pm
+Makefile.PL
 README
+lib/Net/Z3950/PQF.pm
 t/1.t
