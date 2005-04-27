@@ -1,8 +1,8 @@
-$Id: Changes,v 1.8 2004/12/23 10:24:11 mike Exp $
+$Id: Changes,v 1.9 2005/04/27 10:52:51 mike Exp $
 
 Revision history for Perl extension Net::Z3950::PQF.
 
-0.03  (IN PROGRESS)
+0.03  Wed Apr 27 11:51:28 BST 2005
 	- Net::Z3950::PQF::TermNode and Net::Z3950::PQF::BooleanNode
 	  are now subclasses of Net::Z3950::PQF::BooleanNode as
 	  documented.  Test script "t/1-node.t" now tests subclass
@@ -13,6 +13,10 @@ Revision history for Perl extension Net::Z3950::PQF.
 	  tests @set queries.
 	- Handle multi-word terms enclosed in {curly brackets}.  Test
 	  script "t/2-parser.t" tests this.
+	- Representation of Term nodes has changed due to new private
+	  base-class shared with Rset nodes.  NOTE THAT THIS IS A
+	  BACKWARDS INCOMPATIBLE CHANGE.  Code that used to
+	  inspect $termNode->{term} should now use $termNode->{value}
 
 0.02  Fri Dec 17 17:17:47 GMT 2004
 	- Write the code!  First functional version.
