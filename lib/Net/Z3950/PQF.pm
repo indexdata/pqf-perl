@@ -1,4 +1,4 @@
-# $Id: PQF.pm,v 1.7 2004/12/23 10:24:12 mike Exp $
+# $Id: PQF.pm,v 1.8 2007/10/05 12:12:34 mike Exp $
 
 package Net::Z3950::PQF;
 
@@ -8,7 +8,7 @@ use warnings;
 
 use Net::Z3950::PQF::Node;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 =head1 NAME
@@ -43,9 +43,11 @@ parse-trees.
 
 What is a PQF parse-tree good for?  Not much.  You can render a
 human-readable version by invoking the top node's C<render()> method,
-which is probably useful only for debugging.  If you want to do
-anything useful, such as implementing an actual query server that
-understands PQF, you'll have to walk the tree.
+which is probably useful only for debugging.  Or you can turn it into
+tree of nodes like those passed into SimpleServer search handlers
+using C<toSimpleServer()>.  If you want to do anything useful, such as
+implementing an actual query server that understands PQF, you'll have
+to walk the tree.
 
 =head1 METHODS
 
