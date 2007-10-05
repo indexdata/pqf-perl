@@ -1,4 +1,4 @@
-# $Id: Node.pm,v 1.3 2004/12/20 09:46:58 mike Exp $
+# $Id: Node.pm,v 1.4 2007/10/05 12:13:05 mike Exp $
 
 package Net::Z3950::PQF::Node;
 
@@ -157,6 +157,24 @@ sub render {
 }
 
 
+=head2 toSimpleServer()
+
+ $node->toSimpleServer();
+
+Transforms the contents of the tree rooted at the specified node,
+returning a correpsonding tree of the Perl structures produced by the
+Net::Z3950::SimpleServer module and passed as the {RPN} argument to
+search handlers.  This emulation is useful for testing code that
+expects to receive queries in that format.
+
+=cut
+
+sub toSimpleServer {
+    my $class = shift();
+    die "can't translate an abstract $class into SimpleServer form";
+}
+
+
 
 # PRIVATE base class, used as base by TermNode and RsetNode
 package Net::Z3950::PQF::LeafNode;
@@ -186,12 +204,33 @@ sub render {
     return $text;
 }
 
+sub toSimpleServer {
+    my $this = shift();
+
+    my $attrs = bless [], "Net::Z3950::RPN::Attributes";
+    foreach my $attr (@{ $this->{attrs} }) {
+	my($set, $type, $val) = @$attr;
+	push @$attrs, bless {
+	    attributeSet => $set,
+	    attributeType => $type,
+	    attributeValue => $val, 
+	}, "Net::Z3950::RPN::Attribute";
+    }
+
+    return bless {
+	$this->_ssname() => $this->{value},
+	attributes => $attrs,
+    }, $this->_ssclass();
+}
+
 
 
 package Net::Z3950::PQF::TermNode;
 our @ISA = qw(Net::Z3950::PQF::LeafNode);
 
 sub _name { "term" }
+sub _ssname { "term" }
+sub _ssclass { "Net::Z3950::RPN::Term" }
 
 
 
@@ -199,6 +238,8 @@ package Net::Z3950::PQF::RsetNode;
 our @ISA = qw(Net::Z3950::PQF::LeafNode);
 
 sub _name { "rset" }
+sub _ssname { "id" }
+sub _ssclass { "Net::Z3950::RPN::RSID" }
 
 
 
@@ -228,12 +269,24 @@ sub render {
     return $text;
 }
 
+sub toSimpleServer {
+    my $this = shift();
+
+    my $res;
+    foreach my $sub (@{ $this->{sub} }) {
+	push @$res, $sub->toSimpleServer();
+    }
+
+    return bless $res, $this->_ssclass();
+}
+
 
 
 package Net::Z3950::PQF::AndNode;
 our @ISA = qw(Net::Z3950::PQF::BooleanNode);
 
 sub _op { "and" }
+sub _ssclass { "Net::Z3950::RPN::And" }
 
 
 
@@ -241,6 +294,7 @@ package Net::Z3950::PQF::OrNode;
 our @ISA = qw(Net::Z3950::PQF::BooleanNode);
 
 sub _op { "or" }
+sub _ssclass { "Net::Z3950::RPN::Or" }
 
 
 
@@ -248,6 +302,7 @@ package Net::Z3950::PQF::NotNode;
 our @ISA = qw(Net::Z3950::PQF::BooleanNode);
 
 sub _op { "not" }
+sub _ssclass { "Net::Z3950::RPN::AndNote" }
 
 
 
