@@ -2,3 +2,6 @@
 CVS
 releases
 t/CVS
+build-stamp
+install-stamp
+debian
