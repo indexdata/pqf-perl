@@ -1,0 +1,30 @@
+Source: libnet-z3950-pqf-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 5.0.0)
+Build-Depends-Indep: perl (>= 5.8.8-7ubuntu3)
+Maintainer: Mike Taylor <mike@miketaylor.org.uk>
+Standards-Version: 3.7.2
+
+Package: libnet-z3950-pqf-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, 
+Description:  Perl extension for parsing PQF (Prefix Query Format)
+ This library provides a parser for PQF (Prefix Query Format), an ugly
+ but precise string format for expressing Z39.50 Type-1 queries.  This
+ format is widely used behind the scenes of Z39.50 applications, and is
+ also used extensively with test-harness programs such as the YAZ
+ command-line client, yaz-client.  A few particularly misguided
+ souls have been known to type it by hand.
+ .
+ Unlike PQF itself, this module
+ is simple to use.  Create a parser object, then pass PQF strings
+ into its parse() method to yield parse-trees.  The trees are made
+ up of nodes whose types are subclasses of
+ Net::Z3950::PQF::Node.
+ and have names of the form
+ Net::Z3950::PQF::somethingNode.  You may find it helpful to use
+ Data::Dumper to visualise the structure of the returned
+ parse-trees.
+ .
+ This description was automagically extracted from the module by dh-make-perl.
