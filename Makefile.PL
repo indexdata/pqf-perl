@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.4 2007/11/19 13:42:58 mike Exp $
+# $Id: Makefile.PL,v 1.5 2007/11/27 17:11:29 mike Exp $
 
 use 5.006;
 use ExtUtils::MakeMaker;
@@ -16,9 +16,9 @@ WriteMakefile(
 
 sub MY::postamble { "debian: makemakerdflt
 	dpkg-buildpackage -rfakeroot -d
-	rm -rf debian-output
-	mkdir debian-output
-	mv ../libnet-z3950-pqf-perl* debian-output
+	rm -rf debian/output
+	mkdir debian/output
+	mv ../libnet-z3950-pqf-perl* debian/output
 ";
 }
                                               
