@@ -16,15 +16,3 @@ Description:  Perl extension for parsing PQF (Prefix Query Format)
  also used extensively with test-harness programs such as the YAZ
  command-line client, yaz-client.  A few particularly misguided
  souls have been known to type it by hand.
- .
- Unlike PQF itself, this module
- is simple to use.  Create a parser object, then pass PQF strings
- into its parse() method to yield parse-trees.  The trees are made
- up of nodes whose types are subclasses of
- Net::Z3950::PQF::Node.
- and have names of the form
- Net::Z3950::PQF::somethingNode.  You may find it helpful to use
- Data::Dumper to visualise the structure of the returned
- parse-trees.
- .
- This description was automagically extracted from the module by dh-make-perl.
