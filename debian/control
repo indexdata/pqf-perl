@@ -8,7 +8,7 @@ Standards-Version: 3.7.2
 
 Package: libnet-z3950-pqf-perl
 Architecture: all
-Depends: ${perl:Depends}, ${misc:Depends}, 
+Depends: ${perl:Depends}
 Description:  Perl extension for parsing PQF (Prefix Query Format)
  This library provides a parser for PQF (Prefix Query Format), an ugly
  but precise string format for expressing Z39.50 Type-1 queries.  This
