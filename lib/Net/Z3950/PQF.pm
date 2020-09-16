@@ -8,7 +8,7 @@ use warnings;
 
 use Net::Z3950::PQF::Node;
 
-our $VERSION = '0.04';
+our $VERSION = '1.0';
 
 
 =head1 NAME
