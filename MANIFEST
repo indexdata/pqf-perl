@@ -8,3 +8,4 @@ lib/Net/Z3950/PQF/Node.pm
 t/1-node.t
 t/2-parser.t
 t/3-simpleserver.t
+t/4-classnamemap.t
