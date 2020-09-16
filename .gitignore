@@ -1,5 +1,7 @@
+MYMETA.json
+MYMETA.yml
 Makefile
 blib
-pm_to_blib
-install-stamp
 build-stamp
+install-stamp
+pm_to_blib
